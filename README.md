@@ -3,5 +3,5 @@
 Name: Jose Cardona
 Matrikelnr: 577913
 
-The application will be managing applicants from a dummy recruitment business
+The application will be managing applicants for a dummy recruitment business
  
