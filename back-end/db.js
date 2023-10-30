@@ -25,7 +25,7 @@ const Pool = require("pg").Pool;
 
 /**
  * The connection pool object.
- *
+ * @hello
  * @type {Pool}
  * @const
  * @namespace pool
