@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applicants DB</title>
+    <script>
+        const addEventHandler = function () {
+            // What event are we interested in?
+            // What is the event target?
+            // What is the event handler?
+            document.getElementById("applicants-form").onsubmit = sendReqAndDisplayAnswer;
+        }
+
+        function sendReqAndDisplayAnswer(e){
+            e.preventDefault();
+
+            const applicantID = document.getElementById("applicantID").value;
+            //const urls = "http://localhost:8000/applicants/"
+            let url;
+            if (applicantID == ""){
+                url = "http://localhost:8000/applicants/";
+            }else {
+                url = "http://localhost:8000/applicants/" + applicantID;
+            }
+            let httpRequest = new XMLHttpRequest();
+
+            httpRequest.open("GET", url, true);
+
+            httpRequest.onerror = function() {
+                console.log("There was an error connecting to the applicants database.");
+            }
+
+            httpRequest.onload = function() {
+                let data = this.response;
+                let obj = JSON.parse(data);
+                if(this.status == 200){
+                    console.log(obj);
+                    document.getElementById("response").innerHTML = JSON.stringify(obj, null, 4);
+                }
+            }
+
+            httpRequest.send();
+        }
+
+        window.onload = addEventHandler;
+    </script>
+</head>
+<body>
+    <h1>Applicants DB</h1>
+    <div class="input-area">
+        <form id="applicants-form">
+            <label>Enter applicant ID:</label>
+            <input id ="applicantID" type="text">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <br>
+    <div>
+        <h2>Response:</h2>
+        <textarea id="response" cols="140" rows="50"></textarea>
+    </div>
+</body>
+</html>
