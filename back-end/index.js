@@ -28,6 +28,7 @@ app.use(express.json());
  *
  * @name CreateApplicant
  * @route {POST} /applicants
+ * @bodyparam {string} avatar - avatar for the applicant.
  * @bodyparam {string} first_name - The first name of the applicant.
  * @bodyparam {string} last_name - The last name of the applicant.
  * @bodyparam {string} email - The email address of the applicant.
@@ -36,8 +37,8 @@ app.use(express.json());
  */
 app.post("/applicants", async (req, res) => {
     try{
-        const {first_name, last_name, email, position, liked } = req.body;
-        const newApplicant = await pool.query("INSERT INTO applicants (first_name, last_name, email, position, liked) VALUES($1, $2, $3, $4, $5) RETURNING *",[first_name, last_name, email, position, liked] );
+        const {avatar, first_name, last_name, email, position, liked } = req.body;
+        const newApplicant = await pool.query("INSERT INTO applicants (avatar, first_name, last_name, email, position, liked) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",[avatar, first_name, last_name, email, position, liked] );
         res.json(newApplicant.rows[0]);
     }
     catch (err){
@@ -96,10 +97,10 @@ app.get("/applicants/:id" , async (req, res) => {
 app.put("/applicants/:id", async (req, res) => {
     try {
         const {id} = req.params;
-        const {first_name, last_name, email, position, liked} = req.body;
+        const {avatar, first_name, last_name, email, position, liked} = req.body;
 
-        const updateApplicant = await pool.query("UPDATE applicants SET first_name = $1, last_name = $2, email = $3, position = $4, liked = $5 WHERE applicant_id = $6",
-            [first_name, last_name, email, position, liked, id]);
+        const updateApplicant = await pool.query("UPDATE applicants SET avatar = $1, first_name = $2, last_name = $3, email = $4, position = $5, liked = $6 WHERE applicant_id = $7",
+            [avatar, first_name, last_name, email, position, liked, id]);
 
         res.json("Applicant was updated successfully");
     } catch (err) {
