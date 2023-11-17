@@ -1,15 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Table, TableBody, TableHead, TableCell, TableRow, Paper, TableContainer, TablePagination} from "@mui/material";
 import ApplicantRow from "./ApplicantRow";
 
 type Applicant = {
     id: number
-    avatar: string
+    avatar?: string
     first_name: string
     last_name: string
     email: string
     position: string
-    liked: boolean
+    likes: number
 }
 
 type ApplicantTableProps = {
@@ -17,10 +17,29 @@ type ApplicantTableProps = {
     onApplicantSelect: (applicantId: number) => void
 }
 
-const ApplicantTable: React.FC<ApplicantTableProps> = ({ applicants, onApplicantSelect }) => {
+const ApplicantTable = () => {
 
+    const [applicants, setApplicants] = useState<Applicant[]>([]);
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
+
+    useEffect(() => {
+        const fetchData = async () =>{
+            try{
+                const response = await fetch("http://localhost:8000/applicants/")
+                if(!response.ok){
+                    throw new Error("Network response not ok.")
+                }
+                const data = await response.json()
+                console.log(data)
+                setApplicants(data)
+            }
+            catch (e) {
+                console.error('Fetch error:', e)
+            }
+        }
+        fetchData()
+    }, [])
 
     const handleChangePage = (_event: unknown, newPage: number) => {
         setPage(newPage)
@@ -42,12 +61,12 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ applicants, onApplicant
                             <TableCell>Last Name</TableCell>
                             <TableCell>Email</TableCell>
                             <TableCell>Position</TableCell>
-                            <TableCell>Liked</TableCell>
+                            <TableCell>Likes</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {applicants.map((applicant) => (
-                            <ApplicantRow key={applicant.id} applicant={applicant} onRowClick={onApplicantSelect}/>
+                            <ApplicantRow key={applicant.id} applicant={applicant}/>
                         ))}
                     </TableBody>
                 </Table>

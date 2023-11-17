@@ -15,11 +15,16 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const path = require("path")
 const pool = require("./db");
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+//To be able to store the images in the database
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 /**
  * Create an applicant.
@@ -92,15 +97,16 @@ app.get("/applicants/:id" , async (req, res) => {
  * @bodyparam {string} last_name - The updated last name of the applicant.
  * @bodyparam {string} email - The updated email address of the applicant.
  * @bodyparam {string} position - The updated position of the applicant.
- * @bodyparam {boolean} liked - The updated liked status of the applicant.
+ * @bodyparam {number} likes - The updated liked status of the applicant.
+ * @bodyparam {string} avatar - The updated liked status of the applicant.
  */
 app.put("/applicants/:id", async (req, res) => {
     try {
         const {id} = req.params;
-        const {avatar, first_name, last_name, email, position, liked} = req.body;
+        const {avatar, first_name, last_name, email, position, likes} = req.body;
 
-        const updateApplicant = await pool.query("UPDATE applicants SET avatar = $1, first_name = $2, last_name = $3, email = $4, position = $5, liked = $6 WHERE applicant_id = $7",
-            [avatar, first_name, last_name, email, position, liked, id]);
+        const updateApplicant = await pool.query("UPDATE applicants SET avatar = $1, first_name = $2, last_name = $3, email = $4, position = $5, likes = $6 WHERE applicant_id = $7",
+            [avatar, first_name, last_name, email, position, likes, id]);
 
         res.json("Applicant was updated successfully");
     } catch (err) {
@@ -117,18 +123,17 @@ app.put("/applicants/:id", async (req, res) => {
  * @route {DELETE} /applicants/:id
  * @routeparam {number} id - The ID of the applicant.
  */
-app.delete("/applicants/:id", async (req, res) => {
+
     app.delete("/applicants/:id", async (req, res) => {
         try {
             const {id} = req.params;
-            const deleteApplicant = await pool.query("DELETe FROM applicants WHERE applicant_id = $1", [id]);
+            const deleteApplicant = await pool.query("DELETE FROM applicants WHERE applicant_id = $1", [id]);
 
             res.json("Applicant deleted successfully!");
         } catch (err) {
             console.log(err.message);
         }
-    })
-});
+    });
 
 // Start the server
 app.listen(8000, () => {
