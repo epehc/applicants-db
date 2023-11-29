@@ -38,12 +38,11 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
  * @bodyparam {string} last_name - The last name of the applicant.
  * @bodyparam {string} email - The email address of the applicant.
  * @bodyparam {string} position - The position applied for by the applicant.
- * @bodyparam {boolean} liked - Whether the applicant was liked or not.
  */
 app.post("/applicants", async (req, res) => {
     try{
-        const {avatar, first_name, last_name, email, position, liked } = req.body;
-        const newApplicant = await pool.query("INSERT INTO applicants (avatar, first_name, last_name, email, position, liked) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",[avatar, first_name, last_name, email, position, liked] );
+        const {avatar, first_name, last_name, email, position } = req.body;
+        const newApplicant = await pool.query("INSERT INTO applicants (avatar, first_name, last_name, email, position) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",[avatar, first_name, last_name, email, position] );
         res.json(newApplicant.rows[0]);
     }
     catch (err){
@@ -58,7 +57,7 @@ app.post("/applicants", async (req, res) => {
  * @name GetAllApplicants
  * @route {GET} /applicants
  */
-app.get("/applicants", async(req,res) => {
+app.get("/applicants", async(req, res) => {
     try {
         const allApplicants = await pool.query("SELECT * FROM applicants");
         res.json(allApplicants.rows)
@@ -97,16 +96,15 @@ app.get("/applicants/:id" , async (req, res) => {
  * @bodyparam {string} last_name - The updated last name of the applicant.
  * @bodyparam {string} email - The updated email address of the applicant.
  * @bodyparam {string} position - The updated position of the applicant.
- * @bodyparam {number} likes - The updated liked status of the applicant.
  * @bodyparam {string} avatar - The updated liked status of the applicant.
  */
 app.put("/applicants/:id", async (req, res) => {
     try {
         const {id} = req.params;
-        const {avatar, first_name, last_name, email, position, likes} = req.body;
+        const {avatar, first_name, last_name, email, position, applicant_id} = req.body;
 
-        const updateApplicant = await pool.query("UPDATE applicants SET avatar = $1, first_name = $2, last_name = $3, email = $4, position = $5, likes = $6 WHERE applicant_id = $7",
-            [avatar, first_name, last_name, email, position, likes, id]);
+        const updateApplicant = await pool.query("UPDATE applicants SET avatar = $1, first_name = $2, last_name = $3, email = $4, position = $5 WHERE applicant_id = $6",
+            [avatar, first_name, last_name, email, position, applicant_id]);
 
         res.json("Applicant was updated successfully");
     } catch (err) {

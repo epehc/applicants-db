@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import ApplicantTable from './components/ApplicantTable';
+import SearchAppBar from "./components/SearchBar/SearchAppBar";
 
 // Dummy data for applicants
 
@@ -53,16 +53,10 @@ import ApplicantTable from './components/ApplicantTable';
 ];*/
 
 function App() {
-    const handleApplicantSelect = (applicantId: number) => {
-        // Placeholder function to handle applicant selection, like opening a modal
-        console.log('Applicant selected:', applicantId);
-    };
-
 
     return (
         <Container maxWidth="xl">
-            <h1>Applicants</h1>
-            <ApplicantTable />
+            <SearchAppBar/>
         </Container>
     );
 }
