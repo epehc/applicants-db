@@ -4,7 +4,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import ApplicantModal, {Applicant} from "../ApplicantModal/ApplicantModal"
 import {makeStyles} from "@mui/styles";
 
-
 type ApplicantRowProps = {
     applicant: Applicant
 }
@@ -79,6 +78,9 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant}) => {
                         <FavoriteIcon />
                     </IconButton>
                     {likes}
+                </TableCell>
+                <TableCell>
+                    Delete
                 </TableCell>
             </TableRow>
             <ApplicantModal applicant={updatedApplicant} open={modalOpen} onClose={handleCloseModal} onSave={handleSaveApplicant}/>
