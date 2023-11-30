@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from 'react'
 import {Modal, Box, Button, TextField, Avatar} from '@mui/material'
 import {makeStyles} from "@mui/styles";
+import {NewApplicant} from "../SearchBar/AddApplicantModal";
 
 const useStyles = makeStyles({
-    modal: {
+    applicantModal: {
         borderRadius: "1.5rem",
         position: 'absolute',
         top: '50%',
@@ -19,41 +20,37 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    avatar: {
-        height: "100px",
-        width: "100px",
-        marginBottom: '10px',
-        fontSize: "42pt"
+    applicantModalAvatar: {
+        height: "100px !important",
+        width: "100px !important",
+        marginBottom: '10px !important',
+        fontSize: "42pt !important"
+
     },
-    inputField: {
-        margin: '10px 0',
-        width: '100%',
+    applicantModalTextField: {
+        margin: '10px 0 !important',
+        width: '100% !important',
     },
-    buttonGroup: {
-        display: 'flex',
-        justifyContent: 'space-between',
+    applicantModalButtonGroup: {
+        display: 'flex !important',
+        justifyContent: 'space-between !important',
         marginTop: '20px',
     },
-    remove: {
-        fontSize: "10pt",
-        textDecoration: "underline",
-        color: "red",
+    applicantModalRemove: {
+        fontSize: "10pt !important",
+        textDecoration: "underline !important",
+        color: "red !important",
     },
-    changeRemove: {
-        display: "flex",
+    applicantModalChangeRemove: {
+        display: "flex !important",
         flexDirection: "column",
-        alignItems: 'center',
-        marginBottom: "30px"
+        alignItems: 'center !important',
+        marginBottom: "30px !important"
     }
 });
 
-export type Applicant = {
+export type Applicant = NewApplicant & {
     applicant_id: number
-    first_name: string
-    last_name: string
-    email: string
-    position: string
-    avatar?: string
 }
 
 type ApplicantModalProps = {
@@ -64,12 +61,10 @@ type ApplicantModalProps = {
 }
 
 const ApplicantModal: React.FC<ApplicantModalProps> = ({ applicant, open, onClose, onSave }) => {
-
     const [editMode, setEditMode] = useState(false)
     const [editedApplicant, setEditedApplicant] = useState<Applicant>(applicant)
     const [avatar, setAvatar] = useState(applicant.avatar)
 
-    // @ts-ignore
     const styles = useStyles()
 
     useEffect(() => {
@@ -119,61 +114,42 @@ const ApplicantModal: React.FC<ApplicantModalProps> = ({ applicant, open, onClos
 
     return (
         <Modal open={open} onClose={onClose}>
-            <Box className={styles.modal}>
-                <Avatar src={`http://localhost:8000${avatar}`} className={styles.avatar}>
+            <Box className={styles.applicantModal}>
+                <Avatar src={`http://localhost:8000${avatar}`} className={styles.applicantModalAvatar}>
                     {!editedApplicant.avatar && getInitials(editedApplicant.first_name, editedApplicant.last_name)}
                 </Avatar>
                 {editMode &&
-                    <div className={styles.changeRemove}>
+                    <div className={styles.applicantModalChangeRemove}>
                         <input type="file" accept="image/" id="avatar-change" onChange={handleAvatarChange}/>
-                        <Button className={styles.remove} onClick={handleRemovePicture}>remove</Button>
+                        <Button className={styles.applicantModalRemove} onClick={handleRemovePicture}>remove</Button>
                     </div>
                 }
 
-                <TextField
-                    label="First Name" name="first_name"
-                    value={editedApplicant.first_name}
-                    onChange={handleInputChange}
-                    className={styles.inputField}
-                    InputProps={{
+                <TextField  label="First Name" name="first_name" value={editedApplicant.first_name}
+                           onChange={handleInputChange} className={styles.applicantModalTextField} InputProps={{
                         readOnly: !editMode,
-                    }  }
-                />
-                <TextField
-                    label="Last Name" name="last_name"
-                    value={editedApplicant.last_name}
-                    onChange={handleInputChange}
-                    className={styles.inputField}
-                    InputProps={{
+                    }  }/>
+
+                <TextField  label="Last Name" name="last_name" value={editedApplicant.last_name}
+                    onChange={handleInputChange} className={styles.applicantModalTextField} InputProps={{
                         readOnly: !editMode,
-                    }  }
-                />
-                <TextField label="Email" name="email"
-                    value={editedApplicant.email}
-                    onChange={handleInputChange}
-                    className={styles.inputField}
-                    InputProps={{
+                    }  }/>
+
+                <TextField  label="Email" name="email" value={editedApplicant.email}
+                    onChange={handleInputChange} className={styles.applicantModalTextField} InputProps={{
                         readOnly: !editMode,
-                    }  }
-                />
-                <TextField
-                    label="Position" name="position"
-                    value={editedApplicant.position}
-                    onChange={handleInputChange}
-                    className={styles.inputField}
-                    InputProps={{
+                    }  }/>
+
+                <TextField label="Position" name="position" value={editedApplicant.position}
+                    onChange={handleInputChange} className={styles.applicantModalTextField} InputProps={{
                         readOnly: !editMode,
-                    }  }
-                />
-                <div className={styles.buttonGroup}>
-                    {editMode ? (
-                        <Button onClick={handleSave}>Save</Button>
-                    ) : (
-                        <Button onClick={handleEdit}>Edit</Button>
-                    )}
+                    }  }/>
+
+                <div className={styles.applicantModalButtonGroup}>
+                    {editMode ? (<Button onClick={handleSave}>Save</Button>)
+                        : (<Button onClick={handleEdit}>Edit</Button>)}
                     <Button onClick={onClose}>Cancel</Button>
                 </div>
-
             </Box>
         </Modal>
     )

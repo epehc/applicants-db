@@ -42,7 +42,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.post("/applicants", async (req, res) => {
     try{
         const {avatar, first_name, last_name, email, position } = req.body;
-        const newApplicant = await pool.query("INSERT INTO applicants (avatar, first_name, last_name, email, position) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",[avatar, first_name, last_name, email, position] );
+        const newApplicant = await pool.query("INSERT INTO applicants (avatar, first_name, last_name, email, position) VALUES($1, $2, $3, $4, $5) RETURNING *",[avatar, first_name, last_name, email, position] );
         res.json(newApplicant.rows[0]);
     }
     catch (err){
