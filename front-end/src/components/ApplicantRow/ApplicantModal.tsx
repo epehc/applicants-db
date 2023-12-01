@@ -4,7 +4,7 @@ import {Modal, Box, Button, TextField, Avatar} from '@mui/material'
 import {makeStyles} from "@mui/styles";
 import {NewApplicant} from "../SearchBar/AddApplicantModal";
 
-const useStyles = makeStyles({
+const applicantModalStyles = makeStyles({
     applicantModal: {
         borderRadius: "1.5rem",
         position: 'absolute',
@@ -65,7 +65,7 @@ const ApplicantModal: React.FC<ApplicantModalProps> = ({ applicant, open, onClos
     const [editedApplicant, setEditedApplicant] = useState<Applicant>(applicant)
     const [avatar, setAvatar] = useState(applicant.avatar)
 
-    const styles = useStyles()
+    const styles = applicantModalStyles()
 
     useEffect(() => {
         setEditedApplicant(applicant)
