@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useState} from "react"
 import {Avatar, Box, Button, Modal, TextField} from "@mui/material";
 import {makeStyles} from "@mui/styles";
 
@@ -46,6 +46,9 @@ const addApplicantModalStyles = makeStyles({
     }
 });
 
+/**
+ * Represents the structure of a new applicant.
+ */
 export type NewApplicant = {
     avatar?: string;
     first_name: string;
@@ -54,12 +57,25 @@ export type NewApplicant = {
     position: string;
 }
 
+/**
+ * Props for AddApplicantModal component.
+ */
 type AddApplicantModalProps = {
     open: boolean
     onClose: () => void
     onAddApplicant: (applicant: NewApplicant) => void
 }
+
+/**
+ * Modal component for adding a new applicant.
+ *
+ * @param {AddApplicantModalProps} props - Props for the component.
+ * @returns {React.ReactElement} A modal element for adding new applicants.
+ */
 const AddApplicantModal: React.FC<AddApplicantModalProps> = ({open, onClose, onAddApplicant}) => {
+    /**
+    * State for managing the new applicant's details.
+    */
     const [newApplicant, setNewApplicant] = useState<NewApplicant>({
         avatar: undefined,
         first_name: "",
@@ -67,14 +83,30 @@ const AddApplicantModal: React.FC<AddApplicantModalProps> = ({open, onClose, onA
         email:"",
         position:"",
     })
+
+    /**
+     * State for managing the avatar URL.
+     */
     const [avatar, setAvatar] = useState(newApplicant.avatar)
 
     const styles = addApplicantModalStyles()
 
+    /**
+     * Generates initials from the first and last names.
+     *
+     * @param {string} firstName - First name of the applicant.
+     * @param {string} lastName - Last name of the applicant.
+     * @returns {string} The initials of the applicant.
+     */
     const getInitials = (firstName: string, lastName: string) => {
         return `${firstName.charAt(0)}${lastName.charAt(0)}`
     }
 
+    /**
+     * Handles avatar change event.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The event object.
+     */
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
         const file = e.target.files[0]
@@ -85,11 +117,18 @@ const AddApplicantModal: React.FC<AddApplicantModalProps> = ({open, onClose, onA
         }
     }
 
+    /**
+     * Removes the selected avatar.
+     */
     const handleRemovePicture = () => {
         setAvatar(undefined)
         setNewApplicant({ ...newApplicant, avatar: undefined });
     }
 
+    /**
+     * Submits the new applicant's data.
+     * Generates the Email Address based on the first and last name
+     */
     const handleSubmit = () => {
         const updatedEmail = newApplicant.first_name + "." + newApplicant.last_name + "@dunder-mifflin.com"
         const updatedNewApplicant = { ...newApplicant, email: updatedEmail }
@@ -100,6 +139,11 @@ const AddApplicantModal: React.FC<AddApplicantModalProps> = ({open, onClose, onA
         }
     }
 
+    /**
+     * Handles input changes and updates the state.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The event object.
+     */
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
 
@@ -109,6 +153,9 @@ const AddApplicantModal: React.FC<AddApplicantModalProps> = ({open, onClose, onA
         }))
     }
 
+    /**
+     * Resets the form to its initial state.
+     */
     const resetForm = () => {
         handleRemovePicture()
         setNewApplicant({
@@ -131,7 +178,7 @@ const AddApplicantModal: React.FC<AddApplicantModalProps> = ({open, onClose, onA
                 </div>
 
                 <TextField
-                    label="First Name" name="first_name" id="first_name"
+                    label="First Name" name="first_name"
                     value={newApplicant.first_name}
                     onChange={handleInputChange}
                     className={styles.addApplicantTextField}

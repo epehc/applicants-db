@@ -13,6 +13,10 @@ import ApplicantTable from "../ApplicantTable/ApplicantTable";
 import {IconButton} from "@mui/material";
 import AddApplicantModal, {NewApplicant} from "./AddApplicantModal";
 
+/**
+ * Styled component for the search area in the AppBar.
+ * It includes styles for position, background, and hover effects.
+ */
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -24,17 +28,24 @@ const Search = styled('div')(({ theme }) => ({
     width: '300px',
 }));
 
+/**
+ * Styled InputBase component for the search input.
+ * It includes styles for color, padding, and transitions.
+ */
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '100%'
     },
-}))
+}));
 
+/**
+ * Wrapper for the SearchIcon with specific styling.
+ * It includes styles for padding, positioning, and alignment.
+ */
 const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 1),
     height: '100%',
@@ -45,6 +56,10 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     justifyContent: 'center',
 }));
 
+/**
+ * Styled component for the 'Add New' area in the AppBar.
+ * It includes styles for margins, border-radius, font-size, and hover effects.
+ */
 const Add = styled("div")(({theme}) => ({
     marginLeft: "auto",
     borderRadius: theme.shape.borderRadius,
@@ -53,15 +68,37 @@ const Add = styled("div")(({theme}) => ({
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-}))
+}));
 
 
+/**
+ * SearchAppBar component for managing applicant data and interactions.
+ * It includes search functionality, adding new applicants, and a list of existing applicants.
+ */
 const SearchAppBar = () => {
-    const [applicants, setApplicants] = useState<Applicant[]>([])
-    const [searchTerm, setSearchTerm] = useState("")
-    const [filteredApplicants, setFilteredApplicants] = useState<Applicant[]>([])
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+    /**
+     * State for storing all applicants.
+     */
+    const [applicants, setApplicants] = useState<Applicant[]>([]);
 
+    /**
+     * State for handling the search term.
+     */
+    const [searchTerm, setSearchTerm] = useState("");
+
+    /**
+     * State for storing filtered applicants based on the search term.
+     */
+    const [filteredApplicants, setFilteredApplicants] = useState<Applicant[]>([]);
+
+    /**
+     * State for managing the visibility of the Add Applicant modal.
+     */
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    /**
+     * Fetches applicants from the server and updates the state.
+     */
     const fetchData = async () =>{
         try{
             const response = await fetch(`http://localhost:8000/applicants/`)
@@ -78,6 +115,12 @@ const SearchAppBar = () => {
             console.error('Fetch error:', e)
         }
     }
+
+    /**
+     * Handles adding a new applicant.
+     *
+     * @param {NewApplicant} applicantData - The data of the new applicant to be added.
+     */
     const handleAddApplicant = async (applicantData: NewApplicant) => {
         setIsAddModalOpen(false)
         try{
@@ -102,17 +145,30 @@ const SearchAppBar = () => {
         }
     }
 
+    /**
+     * Updates the list of applicants after deletion.
+     */
     const handleDeleteApplicant = () => {
         fetchData()
     }
-    const handleAddClick= () =>{
-        setIsAddModalOpen(true)
-    }
+    /**
+     * Handles the click event to open the Add Applicant modal.
+     */
+    const handleAddClick = () => {
+        setIsAddModalOpen(true);
+    };
 
+    // Fetch applicants on component mount
     useEffect(() => {
-        fetchData()
-    }, [])
+        fetchData();
+    }, []);
 
+    /**
+     * Handles the submission of the search form.
+     * Filters applicants based on the search term.
+     *
+     * @param {{ preventDefault: () => void; }} e - The event object.
+     */
     const handleSearchSubmit = (e: { preventDefault: () => void; }) =>{
         e.preventDefault()
 

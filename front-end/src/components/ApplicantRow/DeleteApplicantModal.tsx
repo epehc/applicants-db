@@ -31,6 +31,13 @@ const deleteApplicantModalStyles = makeStyles({
     }
 });
 
+/**
+ * Props for DeleteApplicantModal component.
+ * @property {Applicant} applicant - The applicant to be deleted.
+ * @property {boolean} open - Controls the visibility of the modal.
+ * @property {Function} onClose - Function to call when closing the modal.
+ * @property {Function} onDeleteApplicant - Function to call for deleting the applicant.
+ */
 type DeleteApplicantModalProps = {
     applicant: Applicant
     open: boolean
@@ -38,9 +45,19 @@ type DeleteApplicantModalProps = {
     onDeleteApplicant: (applicant: Applicant) => void
 }
 
+/**
+ * Modal component for confirming the deletion of an applicant.
+ *
+ * @param {DeleteApplicantModalProps} props - Props for the component.
+ * @returns {React.ReactElement} A modal element for confirming applicant deletion.
+ */
 const DeleteApplicantModal: React.FC<DeleteApplicantModalProps> = ({applicant, open, onClose, onDeleteApplicant}) => {
 
     const styles = deleteApplicantModalStyles()
+
+    /**
+     * Handles the deletion of the applicant.
+     */
     const handleDelete = () => {
         onDeleteApplicant(applicant)
     }

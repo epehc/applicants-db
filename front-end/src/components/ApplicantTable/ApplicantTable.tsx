@@ -4,33 +4,67 @@ import ApplicantRow from "../ApplicantRow/ApplicantRow";
 import {Applicant} from "../ApplicantRow/ApplicantModal";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-
+/**
+ * Props for ApplicantTable component.
+ * @property {Applicant[]} applicants - Array of applicants to display in the table.
+ * @property {Function} onDeleteApplicant - Function to call when an applicant is deleted.
+ */
 type ApplicantTableProps = {
     applicants: Applicant[]
     onDeleteApplicant: () => void
 }
 
+/**
+ * Styled TableCell component with custom styling.
+ */
 const StyledTableCell = styled(TableCell)({
     fontWeight: "bolder",
     textDecoration: "underline",
 })
 
-const ApplicantTable: React.FC<ApplicantTableProps> = ({applicants, onDeleteApplicant}) => {
-    const [page, setPage] = useState(0)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
+/**
+ * Component representing a table of applicants.
+ *
+ * @param {ApplicantTableProps} props - Props for the component.
+ * @returns {React.ReactElement} A table element displaying applicants.
+ */
+const ApplicantTable: React.FC<ApplicantTableProps> = ({ applicants, onDeleteApplicant }) => {
+    /**
+     * State for managing the current page of the table.
+     */
+    const [page, setPage] = useState(0);
 
+    /**
+     * State for managing the number of rows per page in the table.
+     */
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    /**
+     * Handles changes to the current page.
+     *
+     * @param {unknown} _event - The event object (unused).
+     * @param {number} newPage - The new page number.
+     */
     const handleChangePage = (_event: unknown, newPage: number) => {
-        setPage(newPage)
-    }
+        setPage(newPage);
+    };
 
+    /**
+     * Handles changes to the number of rows per page.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} event - The event object.
+     */
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRowsPerPage(parseInt(event.target.value, 10))
-        setPage(0)
-    }
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0); // Reset to the first page
+    };
 
+    /**
+     * Wrapper function to handle the deletion of an applicant.
+     */
     const handleDeleteApplicant = () => {
-        onDeleteApplicant()
-    }
+        onDeleteApplicant();
+    };
     return(
         <Paper elevation={14}
             sx={{

@@ -7,27 +7,64 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import SentimentVeryDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentVeryDissatisfiedOutlined';
 import DeleteApplicantModal from "./DeleteApplicantModal";
 
+
+/**
+ * Props for ApplicantRow component.
+ * @property {Applicant} applicant - The applicant data to display in the row.
+ * @property {Function} onDeleteApplicant - Function to call when an applicant is deleted.
+ */
 type ApplicantRowProps = {
     applicant: Applicant
     onDeleteApplicant: () => void
 }
 
-
+/**
+ * Component representing a single row in the applicant table.
+ *
+ * @param {ApplicantRowProps} props - Props for the component.
+ * @returns {React.ReactElement} A table row element representing an applicant.
+ */
 const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant, onDeleteApplicant}) => {
 
-    const [liked, setLiked] = useState(false)
-    const [editModalOpen, setEditModalOpen] = useState(false)
-    const [updatedApplicant, setApplicant] = useState(applicant)
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    /**
+     * State for tracking the 'liked' status of an applicant.
+     */
+    const [liked, setLiked] = useState(false);
 
+    /**
+     * State for managing the visibility of the edit modal.
+     */
+    const [editModalOpen, setEditModalOpen] = useState(false);
+
+    /**
+     * State for storing the updated applicant details.
+     */
+    const [updatedApplicant, setApplicant] = useState(applicant);
+
+    /**
+     * State for managing the visibility of the delete confirmation modal.
+     */
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+    /**
+     * Opens the delete confirmation modal.
+     */
     const handleDeleteModalOpen = () => {
-        setDeleteModalOpen(true)
-    }
+        setDeleteModalOpen(true);
+    };
 
+    /**
+     * Closes the delete confirmation modal.
+     */
     const handleCloseDeleteModal = () => {
-        setDeleteModalOpen(false)
-    }
+        setDeleteModalOpen(false);
+    };
 
+    /**
+     * Handles the deletion of the applicant by sending an HTTP request
+     *
+     * @param {Applicant} deletedApplicant - Applicant to be deleted.
+     */
     const handleDeleteApplicant = async (deletedApplicant: Applicant) => {
         setDeleteModalOpen(false)
         console.log("Applicant to delete: ", deletedApplicant)
@@ -43,7 +80,7 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant, onDeleteApplicant
             //show the deleted applicant
             if(response.ok){
                 onDeleteApplicant()
-                console.log("applicant deleted successfuly", deletedApplicant)
+                console.log("applicant deleted successfully", deletedApplicant)
             } else {
                 console.log("Failed to delete applicant. Status: ", response.status)
             }
@@ -53,14 +90,25 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant, onDeleteApplicant
         }
     }
 
+    /**
+     * Opens the edit modal.
+     */
     const handleEditModalOpen = () => {
-        setEditModalOpen(true)
-    }
+        setEditModalOpen(true);
+    };
 
+    /**
+     * Closes the edit modal.
+     */
     const handleCloseEditModal = () => {
-        setEditModalOpen(false)
-    }
+        setEditModalOpen(false);
+    };
 
+    /**
+     * Saves the edited applicant details by sending an HTTP request
+     *
+     * @param {Applicant} editedApplicant - Edited applicant details to be saved.
+     */
     const handleSaveApplicant = async (editedApplicant: Applicant) => {
         setEditModalOpen(false)
         try{
@@ -77,20 +125,30 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant, onDeleteApplicant
             !response.ok ?
                 console.log("Failed to update applicant. Status: ", response.status)
                 :
-                console.log("applicant updated successfuly",editedApplicant)
+                console.log("applicant updated successfully",editedApplicant)
         }
         catch (e) {
             console.log("Error updating the applicant...", e)
         }
     }
 
+    /**
+     * Toggles the 'liked' status of the applicant.
+     */
     const handleLike = () => {
-        setLiked(!liked)
-    }
+        setLiked(!liked);
+    };
 
-    const getInitials = (firstName: string, lastName: string) => {
-        return `${firstName.charAt(0)}${lastName.charAt(0)}`
-    }
+    /**
+     * Generates initials from the first and last names of the applicant.
+     *
+     * @param {string} firstName - First name of the applicant.
+     * @param {string} lastName - Last name of the applicant.
+     * @returns {string} The initials of the applicant.
+     */
+    const getInitials = (firstName: string, lastName: string): string => {
+        return `${firstName.charAt(0)}${lastName.charAt(0)}`;
+    };
 
     return(
         <>

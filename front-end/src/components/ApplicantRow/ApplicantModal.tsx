@@ -49,10 +49,22 @@ const applicantModalStyles = makeStyles({
     }
 });
 
+/**
+ * Represents the extended structure of an applicant including the applicant ID.
+ * @extends NewApplicant
+ * @property {number} applicant_id - Unique identifier for the applicant.
+ */
 export type Applicant = NewApplicant & {
     applicant_id: number
 }
 
+/**
+ * Props for ApplicantModal component.
+ * @property {Applicant} applicant - The applicant data to display and edit.
+ * @property {boolean} open - Determines if the modal is open.
+ * @property {Function} onClose - Function to call when closing the modal.
+ * @property {Function} onSave - Function to call when saving the edited applicant.
+ */
 type ApplicantModalProps = {
     applicant: Applicant
     open: boolean
@@ -60,18 +72,39 @@ type ApplicantModalProps = {
     onSave: (applicant: Applicant) => void
 }
 
+/**
+ * Modal component for viewing and editing an applicant's details.
+ *
+ * @param {ApplicantModalProps} props - Props for the component.
+ * @returns {React.ReactElement} A modal element for viewing and editing applicant details.
+ */
 const ApplicantModal: React.FC<ApplicantModalProps> = ({ applicant, open, onClose, onSave }) => {
+    /**
+     * State indicating whether the modal is in edit mode.
+     */
     const [editMode, setEditMode] = useState(false)
+    /**
+     * State for managing the currently edited applicant's details.
+     */
     const [editedApplicant, setEditedApplicant] = useState<Applicant>(applicant)
+    /**
+     * State for managing the avatar URL.
+     */
     const [avatar, setAvatar] = useState(applicant.avatar)
 
     const styles = applicantModalStyles()
 
     useEffect(() => {
+        // Resets the edited applicant when the modal opens or the applicant changes.
         setEditedApplicant(applicant)
         setEditMode(false)
     }, [applicant, open])
 
+    /**
+     * Handles input changes and updates the edited applicant's state.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The event object.
+     */
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
 
@@ -81,6 +114,9 @@ const ApplicantModal: React.FC<ApplicantModalProps> = ({ applicant, open, onClos
         }))
     }
 
+    /**
+     * Handles the saved changes.
+     */
     const handleSave = () => {
         if (editedApplicant) {
             onSave(editedApplicant)
@@ -89,10 +125,18 @@ const ApplicantModal: React.FC<ApplicantModalProps> = ({ applicant, open, onClos
         }
     }
 
+    /**
+     * Handles going into edit mode
+     */
     const handleEdit = () => {
         setEditMode(true);
     }
 
+    /**
+     * Handles avatar change event.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The event object.
+     */
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
         const file = e.target.files[0]
@@ -103,11 +147,21 @@ const ApplicantModal: React.FC<ApplicantModalProps> = ({ applicant, open, onClos
         }
     }
 
+    /**
+     * Removes the selected avatar.
+     */
     const handleRemovePicture = () => {
         setAvatar(undefined)
         setEditedApplicant({ ...editedApplicant, avatar: undefined });
     }
 
+    /**
+     * Generates initials from the first and last names.
+     *
+     * @param {string} firstName - First name of the applicant.
+     * @param {string} lastName - Last name of the applicant.
+     * @returns {string} The initials of the applicant.
+     */
     const getInitials = (firstName: string, lastName: string) => {
         return `${firstName.charAt(0)}${lastName.charAt(0)}`
     }
