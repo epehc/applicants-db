@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {Table, TableBody, TableHead, TableCell, TableRow, Paper, TableContainer, TablePagination, styled,} from "@mui/material";
 import ApplicantRow from "../ApplicantRow/ApplicantRow";
-import {Applicant} from "../ApplicantModal/ApplicantModal";
+import {Applicant} from "../ApplicantRow/ApplicantModal";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 
 type ApplicantTableProps = {
     applicants: Applicant[]
+    onDeleteApplicant: () => void
 }
 
 const StyledTableCell = styled(TableCell)({
@@ -14,7 +15,7 @@ const StyledTableCell = styled(TableCell)({
     textDecoration: "underline",
 })
 
-const ApplicantTable: React.FC<ApplicantTableProps> = ({applicants}) => {
+const ApplicantTable: React.FC<ApplicantTableProps> = ({applicants, onDeleteApplicant}) => {
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
 
@@ -27,6 +28,9 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({applicants}) => {
         setPage(0)
     }
 
+    const handleDeleteApplicant = () => {
+        onDeleteApplicant()
+    }
     return(
         <Paper elevation={14}
             sx={{
@@ -41,8 +45,8 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({applicants}) => {
                             <StyledTableCell>Name</StyledTableCell>
                             <StyledTableCell>Email</StyledTableCell>
                             <StyledTableCell>Position</StyledTableCell>
-                            <StyledTableCell>Likes</StyledTableCell>
-                            <StyledTableCell>
+                            <StyledTableCell>Liked</StyledTableCell>
+                            <StyledTableCell sx={{ paddingLeft:"25px"}}>
                                     <DeleteOutlineOutlinedIcon sx={{color:"#c72828"}}/>
                             </StyledTableCell>
                         </TableRow>
@@ -51,13 +55,13 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({applicants}) => {
                         {applicants.sort((a,b)=> a.applicant_id < b.applicant_id? -1 : 1)
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((applicant) => (
-                            <ApplicantRow key={applicant.applicant_id} applicant={applicant}/>
+                            <ApplicantRow key={applicant.applicant_id} applicant={applicant} onDeleteApplicant={handleDeleteApplicant}/>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[5, 8]}
+                rowsPerPageOptions={[8, 12]}
                 component="div"
                 count={applicants.length}
                 rowsPerPage={rowsPerPage}
