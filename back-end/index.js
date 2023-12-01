@@ -12,11 +12,19 @@
  *
  */
 
+require("dotenv").config()
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path")
-const pool = require("./db");
+const Pool = require("pg").Pool
+const pool = new Pool({
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT, 10),
+    database: process.env.DB_DATABASE
+});
 
 // Middleware
 app.use(cors());
