@@ -8,7 +8,7 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import {useEffect, useState} from "react";
-import {Applicant} from "../ApplicantModal/ApplicantModal";
+import {Applicant} from "../ApplicantRow/ApplicantModal";
 import ApplicantTable from "../ApplicantTable/ApplicantTable";
 import {IconButton} from "@mui/material";
 import AddApplicantModal, {NewApplicant} from "./AddApplicantModal";
@@ -66,7 +66,7 @@ const SearchAppBar = () => {
         try{
             const response = await fetch(`http://localhost:8000/applicants/`)
             if(!response.ok){
-                throw new Error("Network response not ok.")
+                console.log("Failed to fetch data. Status: ", response.status)
             }
             const data = await response.json()
             console.log(data)
@@ -94,7 +94,7 @@ const SearchAppBar = () => {
             await fetchData()
 
             if(!response.ok){
-                throw new Error("Network response not ok")
+                console.log("Failed to post applicant. Status: ", response.status)
             }
         }
         catch (e) {
@@ -102,6 +102,9 @@ const SearchAppBar = () => {
         }
     }
 
+    const handleDeleteApplicant = () => {
+        fetchData()
+    }
     const handleAddClick= () =>{
         setIsAddModalOpen(true)
     }
@@ -129,7 +132,7 @@ const SearchAppBar = () => {
         <Box>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h5" noWrap component="div" sx={{ flexGrow: 0.05 }}>Applicants-DB</Typography>
+                    <Typography variant="h5" noWrap component="div" sx={{ flexGrow: 0.05 }}>Dunder Mifflin-DB</Typography>
                     <form onSubmit={handleSearchSubmit}>
                         <Search>
                             <SearchIconWrapper> <SearchIcon /> </SearchIconWrapper>
@@ -144,7 +147,7 @@ const SearchAppBar = () => {
                 </Toolbar>
             </AppBar>
             <AddApplicantModal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onAddApplicant={handleAddApplicant}/>
-            <ApplicantTable applicants={filteredApplicants} />
+            <ApplicantTable applicants={filteredApplicants} onDeleteApplicant={handleDeleteApplicant} />
         </Box>
     );
 }
