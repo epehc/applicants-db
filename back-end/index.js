@@ -125,7 +125,7 @@ app.put("/applicants/:id", async (req, res) => {
     app.delete("/applicants/:id", async (req, res) => {
         try {
             const {id} = req.params;
-            const deleteApplicant = await pool.query("DELETE FROM applicants WHERE applicant_id = $1", [id]);
+            const deleteApplicant = await pool.query("DELETE FROM applicants WHERE applicant_id = $1", [id])
 
             res.json("Applicant deleted successfully!");
         } catch (err) {
