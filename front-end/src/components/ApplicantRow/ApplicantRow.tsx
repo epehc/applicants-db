@@ -75,7 +75,7 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant, onDeleteApplicant
             setApplicant(editedApplicant)
             //show the updated applicant
             !response.ok ?
-                console.log("Failed to delete applicant. Status: ", response.status)
+                console.log("Failed to update applicant. Status: ", response.status)
                 :
                 console.log("applicant updated successfuly",editedApplicant)
         }
