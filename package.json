@@ -1,5 +1,13 @@
 {
   "dependencies": {
     "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start": "concurrently \"cd front-end && npm start\" \"cd back-end && npm start\"",
+    "start frontend": "cd front-end && npm start",
+    "start backend": "cd back-end && npm start"
   }
 }
