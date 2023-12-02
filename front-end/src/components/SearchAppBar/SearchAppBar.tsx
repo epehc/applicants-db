@@ -13,6 +13,9 @@ import ApplicantTable from "../ApplicantTable/ApplicantTable";
 import {IconButton} from "@mui/material";
 import AddApplicantModal, {NewApplicant} from "./AddApplicantModal";
 
+
+const API_URL = process.env.REACT_APP_API_URL
+
 /**
  * Styled component for the search area in the AppBar.
  * It includes styles for position, background, and hover effects.
@@ -76,6 +79,7 @@ const Add = styled("div")(({theme}) => ({
  * It includes search functionality, adding new applicants, and a list of existing applicants.
  */
 const SearchAppBar = () => {
+
     /**
      * State for storing all applicants.
      */
@@ -101,7 +105,7 @@ const SearchAppBar = () => {
      */
     const fetchData = async () =>{
         try{
-            const response = await fetch(`http://localhost:8000/applicants/`)
+            const response = await fetch(`${API_URL}/applicants/`)
             if(!response.ok){
                 console.log("Failed to fetch data. Status: ", response.status)
             }
@@ -124,7 +128,7 @@ const SearchAppBar = () => {
     const handleAddApplicant = async (applicantData: NewApplicant) => {
         setIsAddModalOpen(false)
         try{
-            const response = await fetch('http://localhost:8000/applicants/', {
+            const response = await fetch(`${API_URL}/applicants/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

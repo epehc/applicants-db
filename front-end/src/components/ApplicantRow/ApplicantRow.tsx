@@ -8,6 +8,7 @@ import SentimentVeryDissatisfiedOutlinedIcon from '@mui/icons-material/Sentiment
 import DeleteApplicantModal from "./DeleteApplicantModal";
 
 
+const API_URL = process.env.REACT_APP_API_URL
 /**
  * Props for ApplicantRow component.
  * @property {Applicant} applicant - The applicant data to display in the row.
@@ -69,7 +70,7 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant, onDeleteApplicant
         setDeleteModalOpen(false)
         console.log("Applicant to delete: ", deletedApplicant)
         try{
-            const response = await fetch(`http://localhost:8000/applicants/${deletedApplicant.applicant_id}`, {
+            const response = await fetch(`${API_URL}/applicants/${deletedApplicant.applicant_id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -112,7 +113,7 @@ const ApplicantRow: React.FC<ApplicantRowProps> = ({applicant, onDeleteApplicant
     const handleSaveApplicant = async (editedApplicant: Applicant) => {
         setEditModalOpen(false)
         try{
-            const response = await fetch(`http://localhost:8000/applicants/${editedApplicant.applicant_id}`, {
+            const response = await fetch(`${API_URL}/applicants/${editedApplicant.applicant_id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
