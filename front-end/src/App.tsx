@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import SearchAppBar from "./components/SearchBar/SearchAppBar";
+import SearchAppBar from "./components/SearchAppBar/SearchAppBar";
 
 // Dummy data for applicants
 

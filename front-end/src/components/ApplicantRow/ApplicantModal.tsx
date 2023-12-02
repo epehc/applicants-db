@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import {Modal, Box, Button, TextField, Avatar} from '@mui/material'
 import {makeStyles} from "@mui/styles";
-import {NewApplicant} from "../SearchBar/AddApplicantModal";
+import {NewApplicant} from "../SearchAppBar/AddApplicantModal";
 
 const applicantModalStyles = makeStyles({
     applicantModal: {
