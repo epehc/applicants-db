@@ -37,7 +37,7 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ applicants, onDeleteApp
     /**
      * State for managing the number of rows per page in the table.
      */
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
 
     /**
      * Handles changes to the current page.
